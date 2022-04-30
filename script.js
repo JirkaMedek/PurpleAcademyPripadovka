@@ -54,7 +54,7 @@ function convert () {
 
             })
             
-            //calculate conversion rate and show it
+            //calculates conversion rate and shows it
             conversionRate = toCurrency / fromCurrency
             connvertedAmount = inputAmountEl.value * conversionRate
             convertedEl.innerHTML = `${inputAmountEl.value} ${fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text} is <strong>${connvertedAmount}</strong> ${toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text}` 
