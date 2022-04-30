@@ -1,0 +1,6 @@
+select {
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #ccc;
+    width: 200px;
+}
