@@ -27,44 +27,36 @@ async function getCurrencies () {
   
 };
 
-
-
-
 convertBtn.addEventListener("click", () => {
-    convert()
-})
-
-
-function convert () {
     if (inputAmountEl.value > 0) {
         getExchangeRate()
-        //function for getting list of currencies
-        async function getExchangeRate () {
-            const response = await fetch('https://openexchangerates.org/api/latest.json?app_id=6127736247b044c698bc473d9b813beb')
-            const currencyJson = await response.json()
-            console.log(currencyJson)
+    }
+})
 
-            //get conversion rate to USD for both currencies
-            Object.entries(currencyJson.rates).forEach(([key, value]) => {
-                if (key === fromCurrencyDtl.value) {
-                    fromCurrency = value
-                } else if (key === toCurrencyDtl.value) {
-                    toCurrency = value
-                }
+//function for getting list of currencies
+async function getExchangeRate () {
+    const response = await fetch('https://openexchangerates.org/api/latest.json?app_id=6127736247b044c698bc473d9b813beb')
+    const currencyJson = await response.json()
 
-            })
-            
-            //calculates conversion rate and shows it
-            conversionRate = toCurrency / fromCurrency
-            connvertedAmount = inputAmountEl.value * conversionRate
-            convertedEl.innerHTML = `${inputAmountEl.value} ${fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text} is <strong>${connvertedAmount}</strong> ${toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text}` 
-
+    //get conversion rate to USD for both currencies
+    Object.entries(currencyJson.rates).forEach(([key, value]) => {
+        if (key === fromCurrencyDtl.value) {
+            fromCurrency = value
+        } else if (key === toCurrencyDtl.value) {
+            toCurrency = value
         }
 
-        
+    })
+    showExchangerate()
+ 
+}
 
-
-    }
+//calculates conversion rate and shows it
+function showExchangerate() {
+    conversionRate = toCurrency / fromCurrency
+    connvertedAmount = inputAmountEl.value * conversionRate
+    convertedEl.innerHTML = `${inputAmountEl.value} ${fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text} is <strong>${connvertedAmount}</strong> ${toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text}` 
+   
 }
 
 
