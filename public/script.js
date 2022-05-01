@@ -1,8 +1,4 @@
-let conversionRate = 0
-let connvertedAmount = 0
 let currecyListItems = ""
-let fromCurrency = 0
-let toCurrency = 0
 const fromCurrencyDtl = document.getElementById("fromCurrency-dtl")
 const toCurrencyDtl = document.getElementById("toCurrency-dtl")
 const convertBtn = document.getElementById("convert-btn")
@@ -57,30 +53,4 @@ async function getExchangeRate () {
  
 }
 
-//calculates conversion rate and shows it
-function showConversion() {
-    conversionRate = toCurrency / fromCurrency
-    connvertedAmount = inputAmountEl.value * conversionRate
-    convertedEl.innerHTML = `${inputAmountEl.value} ${fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text} is <strong>${connvertedAmount}</strong> ${toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text}`  
-}
 
-
-
-
-   //test pro moji api
-async function serverContact() {
-   const fromCurrencyDtlValue = fromCurrencyDtl.value
-   const toCurrencyDtlValue = toCurrencyDtl.value
-   const data ={fromCurrencyDtlValue, toCurrencyDtlValue}
-   const options = {
-       method: 'POST',
-       headers: {
-           'Content-Type': 'application/json'
-       },
-       body: JSON.stringify(data)
-   }
-   const responseSr = await fetch('/api', options)
-   const json = await responseSr.json()
-   console.log(json)
-}
-   ///konec testu

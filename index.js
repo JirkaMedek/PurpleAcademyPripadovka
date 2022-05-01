@@ -23,9 +23,8 @@ app.post('/convert', async (request, response) => {
     })
 
     const conversionRate = toCurrency / fromCurrency
-    const connvertedAmount = request.body.amonut * conversionRate
+    const connvertedAmount = Math.round((request.body.amonut * conversionRate + Number.EPSILON) * 100) /100
 
-    console.log(request.body)
     response.json({
         status:"Converted",
         fromCurrency: request.body.fromCurrencyDtlValue,
