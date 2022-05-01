@@ -13,7 +13,7 @@ getCurrencies()
 
 //function for getting list of currencies
 async function getCurrencies () {
-    const response = await fetch('https://openexchangerates.org/api/currencies.json')
+    const response = await fetch('/currencies')
     const currencyJson = await response.json()
     
     //getting hmtl to fill option
@@ -35,26 +35,30 @@ convertBtn.addEventListener("click", () => {
     }
 })
 
-//function for getting list of currencies
+//function for getting exchange rate to USD
 async function getExchangeRate () {
-    const response = await fetch('https://openexchangerates.org/api/latest.json?app_id=6127736247b044c698bc473d9b813beb')
-    const currencyJson = await response.json()
+    const amonut = inputAmountEl.value 
+    const fromCurrencyDtlValue = fromCurrencyDtl.value
+    const toCurrencyDtlValue = toCurrencyDtl.value
+    const fromCurrencyName = fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text
+    const toCurrencyName = toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text
+    const data ={fromCurrencyDtlValue, toCurrencyDtlValue, amonut, fromCurrencyName, toCurrencyName}
+    const options = {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(data)
+    }
+    const response = await fetch('/convert', options)
+    const convertedJson = await response.json()
 
-    //get conversion rate to USD for both currencies
-    Object.entries(currencyJson.rates).forEach(([key, value]) => {
-        if (key === fromCurrencyDtl.value) {
-            fromCurrency = value
-        } else if (key === toCurrencyDtl.value) {
-            toCurrency = value
-        }
-
-    })
-    showExchangerate()
+    convertedEl.innerHTML = `${convertedJson.baseAmount} ${convertedJson.fromCurrencyName} is <strong>${convertedJson.convertedAmount}</strong> ${convertedJson.toCurrencyName}`
  
 }
 
 //calculates conversion rate and shows it
-function showExchangerate() {
+function showConversion() {
     conversionRate = toCurrency / fromCurrency
     connvertedAmount = inputAmountEl.value * conversionRate
     convertedEl.innerHTML = `${inputAmountEl.value} ${fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text} is <strong>${connvertedAmount}</strong> ${toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text}`  
@@ -63,3 +67,20 @@ function showExchangerate() {
 
 
 
+   //test pro moji api
+async function serverContact() {
+   const fromCurrencyDtlValue = fromCurrencyDtl.value
+   const toCurrencyDtlValue = toCurrencyDtl.value
+   const data ={fromCurrencyDtlValue, toCurrencyDtlValue}
+   const options = {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(data)
+   }
+   const responseSr = await fetch('/api', options)
+   const json = await responseSr.json()
+   console.log(json)
+}
+   ///konec testu
