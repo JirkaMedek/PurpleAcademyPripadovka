@@ -6,6 +6,7 @@ const inputAmountEl = document.getElementById("inputAmount-el")
 const convertedEl = document.getElementById("converted-el")
 
 getCurrencies()
+getHistoricalConversions()
 
 //function for getting list of currencies
 async function getCurrencies () {
@@ -53,4 +54,12 @@ async function getExchangeRate () {
  
 }
 
+
+//show historical data
+async function getHistoricalConversions() {
+    const response = await fetch('/conversions')
+    const resJson = await response.json()
+
+    console.log(resJson)
+}
 
