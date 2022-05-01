@@ -66,13 +66,46 @@ app.get('/currencies', async (request, response) => {
     response.json(currencyJson)
 })
 
-
+//DB data foe statistics
 app.get('/conversions', async (request, response) => {
     const conversions = await conversion.find()
-    console.log(conversions.length)
+    const fetch_response = await fetch('https://openexchangerates.org/api/currencies.json')
+    const currencyJson = await fetch_response.json()
+    let mostConvertedCurrencyName =""
+    const mostConvertedCurrency = await conversion.aggregate([
+        [
+            {
+              '$group': {
+                '_id': '$fromCurrency', 
+                'count': {
+                  '$sum': 1
+                }
+              }
+            }, {
+              '$sort': {
+                'count': -1
+              }
+            }
+          ]
+    ]).limit(1)
+
+    //most converted symbol (full name)
+    Object.entries(currencyJson).forEach(([key, value]) => {
+        if (key === mostConvertedCurrency[0]._id){
+            mostConvertedCurrencyName = value
+        }
+    })
+    
+    //total amount converted
+    let totalAmount = 0
+    for (let i = 0; i < conversions.length; i++) {
+        totalAmount += conversions[i].amonutToConvert
+    }
 
     response.json({
         numberOfConversions: conversions.length,
+        mostConvertedCurrencyName:mostConvertedCurrencyName,
+        totalConvertedAmount:totalAmount
     })
 })
 
