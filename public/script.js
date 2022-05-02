@@ -36,7 +36,7 @@ convertBtn.addEventListener("click", () => {
     }
 })
 
-//function for getting exchange rate to USD
+//function for getting exchange rate from server
 async function getExchangeRate () {
     const amonut = inputAmountEl.value 
     const fromCurrencySlValue = fromCurrencySl.value

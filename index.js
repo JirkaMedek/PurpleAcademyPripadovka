@@ -93,7 +93,7 @@ app.get('/conversions', async (request, response) => {
           ]
     ]).limit(1)
 
-    //most converted symbol (full name)
+    //getting full name of most converted symbol
     Object.entries(currencyJson).forEach(([key, value]) => {
         if (key === mostConvertedCurrency[0]._id){
             mostConvertedCurrencyName = value
