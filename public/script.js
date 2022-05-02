@@ -4,7 +4,9 @@ const toCurrencyDtl = document.getElementById("toCurrency-dtl")
 const convertBtn = document.getElementById("convert-btn")
 const inputAmountEl = document.getElementById("inputAmount-el")
 const convertedEl = document.getElementById("converted-el")
-
+const numberOfConversionsEL = document.getElementById("numOfConversions-el")
+const mostConvertedCurrencyEl = document.getElementById("mostConvertedCurrency-el")
+const convertedAmountEl = document.getElementById("convertedAmount-el")
 getCurrencies()
 getHistoricalConversions()
 
@@ -51,6 +53,8 @@ async function getExchangeRate () {
     const convertedJson = await response.json()
 
     convertedEl.innerHTML = `${convertedJson.baseAmount} ${convertedJson.fromCurrencyName} is <strong>${convertedJson.convertedAmount}</strong> ${convertedJson.toCurrencyName}`
+
+    getHistoricalConversions()
  
 }
 
@@ -59,6 +63,10 @@ async function getExchangeRate () {
 async function getHistoricalConversions() {
     const response = await fetch('/conversions')
     const resJson = await response.json()
+
+    numberOfConversionsEL.textContent = `Number of conversions: ${resJson.numberOfConversions}`
+    mostConvertedCurrencyEl.textContent = `Most converted base currency is: ${resJson.mostConvertedCurrencyName}`
+    convertedAmountEl.textContent = `Total converted amount: ${resJson.totalConvertedAmount}`
 
     console.log(resJson)
 }

@@ -5,18 +5,28 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="style.css">
 <body>
-    <label for="inputAmount">How much you want to convert?</label>
+    <div id="div-el">
+    <label for="inputAmount">Amount to convert:</label>
     <input type="number" name="inputAmount"  id="inputAmount-el">
-
-    <label for="fromCurrency-dtl">Select currency from which you want to convert.</label>
+    </div>
+    <div id="div-el">
+    <label for="fromCurrency-dtl">Select currency from which you want to convert:</label>
     <select id="fromCurrency-dtl">
     </select>
-
-    <label for="toCurrency-dtl">Select currency to which you want to convert.</label>
+    </div>
+    <div id="div-el">
+    <label for="toCurrency-dtl">Select currency to which you want to convert:</label>
     <select id="toCurrency-dtl">
     </select>
+    </div>
     <button id="convert-btn">Convert</button>
     <p id="converted-el"></p>
+    <div id="stats-el">
+    <h3>Statistics</h3>
+    <p id="numOfConversions-el"></p>
+    <p id="mostConvertedCurrency-el"></p>
+    <p id="convertedAmount-el"></p>
+    </div>
 
     <script src="script.js"></script>
 </body>

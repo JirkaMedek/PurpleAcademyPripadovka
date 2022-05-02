@@ -4,6 +4,7 @@ require('dotenv').config()
 const app = express()
 const mongoose = require('mongoose')
 const conversion = require('./models/conversion')
+const Conversion = require('./models/conversion')
 
 app.listen(3000, () => console.log("listening at 3000"))
 app.use(express.static('public'))
@@ -27,7 +28,8 @@ app.post('/convert', async (request, response) => {
     Object.entries(currencyJson.rates).forEach(([key, value]) => {
         if (key === request.body.fromCurrencyDtlValue) {
             fromCurrency = value
-        } else if (key === request.body.toCurrencyDtlValue ) {
+        }
+        if (key === request.body.toCurrencyDtlValue ) {
             toCurrency = value
         }
 
@@ -35,7 +37,7 @@ app.post('/convert', async (request, response) => {
 
     const conversionRate = toCurrency / fromCurrency
     const connvertedAmount = Math.round((request.body.amonut * conversionRate + Number.EPSILON) * 100) /100
-
+    
     //save to DB
     const conversion = new Conversion({
         fromCurrency: request.body.fromCurrencyDtlValue,
@@ -44,7 +46,7 @@ app.post('/convert', async (request, response) => {
         fromCurrencyName: request.body.fromCurrencyName,
         toCurrencyName: request.body.toCurrencyName,
         conversionRate: conversionRate,
-        convertedAmount: connvertedAmount   
+        convertedAmount: connvertedAmount  
     })
     const savedConversions = await conversion.save()
 
