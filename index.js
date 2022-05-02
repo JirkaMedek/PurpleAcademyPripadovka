@@ -6,9 +6,10 @@ const mongoose = require('mongoose')
 const conversion = require('./models/conversion')
 const Conversion = require('./models/conversion')
 
+//initialization of server on port 3000
 app.listen(3000, () => console.log("listening at 3000"))
 app.use(express.static('public'))
-app.use(express.json({limit: '1mb'}))
+app.use(express.json())
 
 //conect to DB
 mongoose.connect(process.env.DB_Connection,
@@ -26,22 +27,23 @@ app.post('/convert', async (request, response) => {
     let toCurrency = 0
     //get conversion rate to USD for both currencies
     Object.entries(currencyJson.rates).forEach(([key, value]) => {
-        if (key === request.body.fromCurrencyDtlValue) {
+        if (key === request.body.fromCurrencySlValue) {
             fromCurrency = value
         }
-        if (key === request.body.toCurrencyDtlValue ) {
+        if (key === request.body.toCurrencySlValue ) {
             toCurrency = value
         }
 
     })
 
+    //calculation of conversion rate
     const conversionRate = toCurrency / fromCurrency
     const connvertedAmount = Math.round((request.body.amonut * conversionRate + Number.EPSILON) * 100) /100
     
     //save to DB
     const conversion = new Conversion({
-        fromCurrency: request.body.fromCurrencyDtlValue,
-        toCurrency: request.body.toCurrencyDtlValue,
+        fromCurrency: request.body.fromCurrencySlValue,
+        toCurrency: request.body.toCurrencySlValue,
         amonutToConvert: request.body.amonut,
         fromCurrencyName: request.body.fromCurrencyName,
         toCurrencyName: request.body.toCurrencyName,
@@ -52,8 +54,8 @@ app.post('/convert', async (request, response) => {
 
     response.json({
         status:"Converted",
-        fromCurrency: request.body.fromCurrencyDtlValue,
-        toCurrency: request.body.toCurrencyDtlValue,
+        fromCurrency: request.body.fromCurrencySlValue,
+        toCurrency: request.body.toCurrencySlValue,
         baseAmount: request.body.amonut,
         convertedAmount: connvertedAmount,
         fromCurrencyName: request.body.fromCurrencyName,
@@ -61,14 +63,14 @@ app.post('/convert', async (request, response) => {
     })
 })
 
-//get currencie for dropbox
+//get currencie for drop-down list
 app.get('/currencies', async (request, response) => {
     const fetch_response = await fetch('https://openexchangerates.org/api/currencies.json')
     const currencyJson = await fetch_response.json()
     response.json(currencyJson)
 })
 
-//DB data foe statistics
+//DB data for statistics
 app.get('/conversions', async (request, response) => {
     const conversions = await conversion.find()
     const fetch_response = await fetch('https://openexchangerates.org/api/currencies.json')

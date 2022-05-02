@@ -1,12 +1,13 @@
 let currecyListItems = ""
-const fromCurrencyDtl = document.getElementById("fromCurrency-dtl")
-const toCurrencyDtl = document.getElementById("toCurrency-dtl")
+const fromCurrencySl = document.getElementById("fromCurrency-sl")
+const toCurrencySl = document.getElementById("toCurrency-sl")
 const convertBtn = document.getElementById("convert-btn")
 const inputAmountEl = document.getElementById("inputAmount-el")
 const convertedEl = document.getElementById("converted-el")
 const numberOfConversionsEL = document.getElementById("numOfConversions-el")
 const mostConvertedCurrencyEl = document.getElementById("mostConvertedCurrency-el")
 const convertedAmountEl = document.getElementById("convertedAmount-el")
+
 getCurrencies()
 getHistoricalConversions()
 
@@ -21,11 +22,12 @@ async function getCurrencies () {
     })
 
     //fill option
-    fromCurrencyDtl.innerHTML = currecyListItems
-    toCurrencyDtl.innerHTML = currecyListItems
+    fromCurrencySl.innerHTML = currecyListItems
+    toCurrencySl.innerHTML = currecyListItems
   
 };
 
+//listening for click on Convert button
 convertBtn.addEventListener("click", () => {
     if (inputAmountEl.value > 0) {
         getExchangeRate()
@@ -37,11 +39,11 @@ convertBtn.addEventListener("click", () => {
 //function for getting exchange rate to USD
 async function getExchangeRate () {
     const amonut = inputAmountEl.value 
-    const fromCurrencyDtlValue = fromCurrencyDtl.value
-    const toCurrencyDtlValue = toCurrencyDtl.value
-    const fromCurrencyName = fromCurrencyDtl.options[fromCurrencyDtl.selectedIndex].text
-    const toCurrencyName = toCurrencyDtl.options[toCurrencyDtl.selectedIndex].text
-    const data ={fromCurrencyDtlValue, toCurrencyDtlValue, amonut, fromCurrencyName, toCurrencyName}
+    const fromCurrencySlValue = fromCurrencySl.value
+    const toCurrencySlValue = toCurrencySl.value
+    const fromCurrencyName = fromCurrencySl.options[fromCurrencySl.selectedIndex].text
+    const toCurrencyName = toCurrencySl.options[toCurrencySl.selectedIndex].text
+    const data ={fromCurrencySlValue, toCurrencySlValue, amonut, fromCurrencyName, toCurrencyName}
     const options = {
        method: 'POST',
        headers: {
@@ -67,7 +69,5 @@ async function getHistoricalConversions() {
     numberOfConversionsEL.textContent = `Number of conversions: ${resJson.numberOfConversions}`
     mostConvertedCurrencyEl.textContent = `Most converted base currency is: ${resJson.mostConvertedCurrencyName}`
     convertedAmountEl.textContent = `Total converted amount: ${resJson.totalConvertedAmount}`
-
-    console.log(resJson)
 }
 
