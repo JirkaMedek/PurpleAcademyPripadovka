@@ -1,5 +1,5 @@
 # PurpleAcademyPripadovka
-`Node js` need tp be installed on the machine.
+`Node js` need to be installed on the machine.
 
 Application runs on localhost on port 3000.
 
